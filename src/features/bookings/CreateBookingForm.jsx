@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { useCreateGuest } from "../guests/useCreateGuest";
+import { useCreateBooking } from "./useCreateBooking";
 import { flags } from "../../data/data-flags";
 
 import Button from "../../ui/Button";
@@ -35,7 +35,7 @@ function CreateBookingForm({ onCloseModel }) {
   const { register, handleSubmit, formState } = useForm();
   const { errors } = formState;
 
-  const { createGuest, isGuestCreating } = useCreateGuest();
+  const { createBooking, isCreatingBooking } = useCreateBooking();
 
   const { cabins, isLoading } = useCabins();
 
@@ -87,7 +87,7 @@ function CreateBookingForm({ onCloseModel }) {
       };
       console.log(guest, booking);
 
-      createGuest({ guest, booking });
+      createBooking({ guest, booking });
     }
   }
 
@@ -110,7 +110,6 @@ function CreateBookingForm({ onCloseModel }) {
               {...register("fullName", {
                 required: "This field is required",
               })}
-              disabled={isGuestCreating}
             />
           </FormRow>
 
@@ -118,7 +117,6 @@ function CreateBookingForm({ onCloseModel }) {
             <Input
               type="text"
               id="email"
-              disabled={isGuestCreating}
               {...register("email", {
                 required: "This field is required",
                 pattern: {
@@ -135,7 +133,6 @@ function CreateBookingForm({ onCloseModel }) {
               options={flags}
               onChange={(e) => handleNationalityChange(e)}
               value={nationality}
-              disabled={isGuestCreating}
             />
           </FormRow>
 
@@ -143,7 +140,6 @@ function CreateBookingForm({ onCloseModel }) {
             <Input
               type="text"
               id="nationalID"
-              disabled={isGuestCreating}
               {...register("nationalID", {
                 required: "This field is required",
               })}
@@ -165,7 +161,7 @@ function CreateBookingForm({ onCloseModel }) {
                   message: "The capacity should be at least 1",
                 },
               })}
-              disabled={false}
+              disabled={isCreatingBooking}
             />
           </FormRow>
 
@@ -201,6 +197,7 @@ function CreateBookingForm({ onCloseModel }) {
               id="observations"
               defaultValue=""
               {...register("observations")}
+              disabled={isCreatingBooking}
             />
           </FormRow>
         </>
@@ -215,7 +212,7 @@ function CreateBookingForm({ onCloseModel }) {
         >
           Cancel
         </Button>
-        <Button disabled={isGuestCreating}>{submitButtonText}</Button>
+        <Button disabled={isCreatingBooking}>{submitButtonText}</Button>
       </FormRow>
     </Form>
   );
